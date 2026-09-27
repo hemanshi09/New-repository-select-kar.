@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Sales Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px #ccc;
+        }
+
+        h1 {
+            color: #2563eb;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 15px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #total {
+            font-size: 24px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Dynamic Sales Dashboard</h1>
+        <p>Monthly Sales Report</p>
+
+        <h2>Total Sales</h2>
+        <p id="total">₹0</p>
+
+        <canvas id="salesChart"></canvas>
+
+        <button onclick="updateChart()">Update Sales</button>
+    </div>
+
+    <script>
+        let sales = [12000, 19000, 15000, 25000, 22000, 30000];
+
+        const ctx = document.getElementById("salesChart");
+
+        const chart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: [
+                    "January", "February", "March",
+                    "April", "May", "June"
+                ],
+                datasets: [{
+                    label: "Monthly Sales (₹)",
+                    data: sales,
+                    backgroundColor: "#3b82f6",
+                    borderColor: "#1d4ed8",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function updateTotal() {
+            let sum = sales.reduce((a, b) => a + b, 0);
+            document.getElementById("total").innerText =
+                "₹" + sum.toLocaleString("en-IN");
+        }
+
+        function updateChart() {
+            sales = sales.map(() =>
+                Math.floor(Math.random() * 40000) + 5000
+            );
+
+            chart.data.datasets[0].data = sales;
+            chart.update();
+            updateTotal();
+        }
+
+        updateTotal();
+    </script>
+</body>
+</html>
